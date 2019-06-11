@@ -91,5 +91,163 @@ as for the MinDepth of Binary Tree, we have to make sure the depth do mean the r
             return 0;
         return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
     }
-    ```
+```
 
+另一种解法是通过递归，然后当发现不平衡的子树的时候，直接返回－1， 然后依次递归返回，这样才能做到o（n）
+
+```java
+ public boolean isBalanced(TreeNode root) {
+//         this means if the maxdepth of this node is -1 ,return 0, means unbalanced
+//         which is -1 means unbalanced, other value mean balance;
+        return maxDepth(root) != -1;
+        
+    }
+    
+    private int maxDepth(TreeNode root){
+//         leaf 
+//要注意空指针异常，这里是因为root可能会是null ，我们必须先吧null的情况说明怎们办（return 0）
+        if (root == null) return 0;
+        
+        int l = maxDepth(root.left);
+        int r = maxDepth (root.right);
+//         this subtree is unbalanced
+        if (l == -1)
+            return -1;
+        if (r == -1)
+            return -1;
+//         return the maxdepth of l or r /is unbalanced return -1
+        return (Math.abs(l - r) <= 1) ? (Math.max(l,r) + 1) : -1;
+    }
+```
+
+#### 108
+
+这道题和二叉搜索很像，递归的放置每一个跟节点，然后是左子树和右子树，（假想叶子节点后其实还跟着两个null，就容易解释了，这个观点感觉和linked list中null头一样）
+
+```java
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return sortedArrayToBST(nums,0,nums.length -1);
+    }
+    
+    private TreeNode sortedArrayToBST(int[] arr, int start, int end){
+        if (start > end ) return null;
+        int mid = (start + end)/2;
+        TreeNode node = new TreeNode(arr[mid]);
+//         because the mid is already placed
+        node.left = sortedArrayToBST(arr,start, mid - 1);
+        node.right = sortedArrayToBST(arr, mid + 1, end);
+        return node;
+    }
+```
+
+
+#### 109 
+1. 简单办法就是强行搞，把链表当作数组，访问费时间
+2. 复杂办法就是从地下往上走（bottom－up） ，可以理解为中序遍历（？那为什么不能是pre－order or  post-order)???
+ 有可能是因为二分法排序后产生的数列就是按照中序遍历出来的，所以为了反相做，不得不使用中序遍历。
+ 
+####124
+
+如果子树为negetive，那么我们就不考虑他，因为他不会给我们带来add number，然后maxSum 就直接等于 p.value ＋ left ＋right,  然后取最大值，因为如果产生－的数据已经被忽略成为了0；
+但是这就引发了recursive 的函数return的是子树的数据大小，而不是maxSum，这也导致了必须有另一个变量纪录maxVal，这使用一个private （局部）全局变量
+
+####136.
+1. 用map，此时相同的key会被覆盖
+
+	```java
+	  public int singleNumber(int[] nums) {
+//           key  ,value
+        Map <Integer, Integer> map = new HashMap<>();
+        for (int x : nums){
+//             if ehere is a value in the map, get the value of it
+            int count = map.containsKey(x) ? map.get(x): 0;
+//             if key is same ,the value will be overwrited
+            map.put(x , count +1);
+            System.out.println(x);
+        }
+        for (int x : nums){
+            if(map.get(x) == 1){
+                return x;
+            }
+        }
+         throw new IllegalArgumentException("No single element");    
+    }
+    ```
+2. 使用set
+
+iterator是什么
+
+#### 54
+这道题告诉我们 ＋＋i比i++好用
+
+####13 
+map的初始化的另一种方式
+
+```java
+private Map<Character, Integer> map =      new HashMap<Character, Integer>() {{            put('I', 1);  put('V', 5);   put('X', 10);            put('L', 50); put('C', 100); put('D', 500);            put('M', 1000);}};
+```
+#### 334
+使用动态规划先吧min，max求出来，最后检查在特定范围内，有没有满足的数，
+
+``` java
+public boolean increasingTriplet(int[] nums) {
+    
+    
+    int len = nums.length;
+    if(len < 3)
+        return false;
+    int[] min = new int[len]; 
+    int[] max = new int[len]; 
+    
+    min[0] = nums[0];
+    for(int i = 1; i < len; i++){      
+        min[i] = Math.min(min[i-1],nums[i]);
+    }
+    max[len-1] = nums[len-1];
+    for(int i = len-2; i>=0; i--){
+        max[i] = Math.max(max[i+1],nums[i]);
+    }
+    
+    for(int i = 0; i < len; i++){
+        if(max[i] > nums[i] && nums[i] > min[i])
+            return true;
+    }
+    return false;
+}
+```
+
+第二种解法
+
+``` java
+public boolean increasingTriplet(int[] nums) {
+        if (nums.length < 3) {
+            return false;
+        }
+        int i, j, k;
+        i = nums[0];
+        j = Integer.MAX_VALUE;
+        k = Integer.MAX_VALUE;
+
+        for (int l = 0; l < nums.length; l++) {
+           //update the i
+           //如果存在更小的，需要更新i
+           if (nums[l] < i) {
+                i = nums[l];
+            }
+            
+            //get the j
+            //问题会发生，主要是更新j的值
+            //nums[l]>i 是为了保证他是第二小，num[l] < j 是为了保证如果有更第二小的存在，可以及时更新
+            if(nums[l] > i && nums[l] < j){
+                j= nums[l];
+            }
+            
+            //    if the k is available return true
+            if(nums[l]> j){
+                return true;
+            }
+        }
+        return false;
+    }
+```
+    
