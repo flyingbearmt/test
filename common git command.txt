@@ -1,0 +1,15 @@
+1. 切换分支
+	git checkout -b ""
+
+2 合并分支
+	git merge ""
+3 建立本地分支与远程的连接
+	git branch --set-upstream-to orgin/""
+
+4 断开本地分支与远程分支的映射
+	git branch --unset-upstream
+
+5 git branch -vv
+	git branch -a
+
+6 git status -vv
