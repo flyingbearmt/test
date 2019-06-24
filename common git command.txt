@@ -12,3 +12,9 @@
 5 git branch -vv
 
 6 git branch -a
+
+7 删除误添加到暂存区的文件
+ git reset .
+
+8 查看和上一次commit的区别
+ git diff --cached
