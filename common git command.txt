@@ -10,4 +10,5 @@
 	git branch --unset-upstream
 
 5 git branch -vv
-	git branch -a
+
+6 git branch -a
