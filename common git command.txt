@@ -3,18 +3,21 @@
 
 2 合并分支
 	git merge ""
+
 3 建立本地分支与远程的连接
 	git branch --set-upstream-to origin/""
 
 4 断开本地分支与远程分支的映射
 	git branch --unset-upstream
 
-5 git branch -vv
+5 列出本地仓库和远程仓库的连接关系
+	git branch -vv
 
-6 git branch -a
+6 详尽列出本地仓库和远程仓库的各个分支
+	git branch -a
 
 7 删除误添加到暂存区的文件
- git reset .
+ 	git reset .
 
 8 查看和上一次commit的区别
- git diff --cached
+ 	git diff --cached
