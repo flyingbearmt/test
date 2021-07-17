@@ -21,3 +21,10 @@
 
 8 查看和上一次commit的区别
  	git diff --cached
+	
+9 删除远端分支
+	git push origin --delete UI-10823
+10 回退上一次commit
+ 	git reset --hard HEAD^ / [commit id]
+11 rebase 到远程主分支
+	git rebase -i origin/master
